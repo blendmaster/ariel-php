@@ -1,7 +1,7 @@
 <?php
 
 include 'ariel.inc.php'; 
-
+open_db();
 $pictures = array("ariel.png", "crab.png", "thingamabob.png", "whatsits.png", "whosit.png");
 shuffle($pictures);
 ?>
@@ -43,6 +43,7 @@ shuffle($pictures);
 				}
 				echo "		</tr>\n";
 			}
+			mysql_close();
 ?>
 	</table>
 	<input type="reset" /><input type="submit" />
