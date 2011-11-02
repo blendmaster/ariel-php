@@ -7,8 +7,11 @@ function open_db() {
 	$password = "ariel";
 	$db = "ariel";
 
-	mysql_connect($server, $username, $password);
-	mysql_select_db($db);
+	if( mysql_connect($server, $username, $password) ) {
+		mysql_select_db($db);
+	} else {
+		return false;
+	}
 }
 
 function get_orders() {
@@ -26,13 +29,15 @@ function get_products() {
 	$products_db = mysql_query('select * from products');
 	$products = array();
 	while($product = mysql_fetch_assoc($products_db)) {
-		$types_db = mysql_query(sprintf('select name from types where types.product = %s', $product['id']));
+		$types_db = mysql_query(sprintf('select * from types where types.product = %s', $product['id']));
 		$types = array();
 		while($type = mysql_fetch_assoc($types_db)) {
-			array_push($types,$type['name']);
+			$types[$type['id']] = $type;
 		}
 		
-		$products[$product['name']] = array("price" => $product['price'], "types" => $types);
+		$products[$product['name']] = array("price" => $product['price'],
+                                            "types" => $types,
+											"id" => $product['id']);
 	}
 	
 	mysql_close();

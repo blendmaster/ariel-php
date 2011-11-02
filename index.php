@@ -17,7 +17,7 @@ shuffle($pictures);
 <img src="images/<?php echo $pictures[2] ?>" />
 
 <form action="order.php" method='post'>
-	<label for="name">Your name: </label> <input type="text" name='name' id='name' />
+	<label for="customer">Your name: </label> <input type="text" name='customer' id='customer' />
 	<table>
 		<tr>
 			<td>Item</td>
@@ -27,14 +27,17 @@ shuffle($pictures);
 		</tr>
 <?php
 			foreach(get_products() as $name => $product) {
+				$id = $product['id'];
 				echo "		<tr>\n";
 				echo "			<td>$name</td>\n";
-				echo sprintf("			<td>$%s</td>\n", $product['price']);
-				echo "			<td><input type='number' name='$name' id='$name' value='0' min='0' /></td>\n";
+				printf("			<td>$%s</td>\n", $product['price']);
+				echo "			<td><input type='number' name='product-$id' id='product-$id' value='0' min='0' /></td>\n";
 				if( count($product['types']) > 0 ) {
-					echo "			<td>\n				<select name='$name-type' id='$name-type'>\n";
+					echo "			<td>\n				<select name='type-of-$id' id='type-of-$id'>\n";
 					foreach($product['types'] as $type) {
-						echo "					<option value='$type'>$type</option>\n";
+						$type_name = $type['name'];
+						$type_id = $type['id'];
+						echo "					<option value='$type_id'>$type_name</option>\n";
 					}
 					echo "				</select>\n			</td>\n";
 				}
